@@ -1,0 +1,49 @@
+{% extends 'store/main.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ product.imageURL }}" class="img-fluid" alt="{{ product.name }}">
+        </div>
+        <div class="col-md-6">
+            <h2>{{ product.name }}</h2>
+            <p><strong>Price:</strong> ${{ product.price }}</p>
+            <p><strong>Description:</strong> {{ product.description }}</p>
+            
+            <!-- Add to Cart -->
+            <button data-product="{{ product.id }}" data-action="add" class="btn btn-primary update-cart">Add to Cart</button>
+
+            
+            <!-- Buy Now -->
+            <a href="{% url 'checkout' %}?product={{ product.id }}&quantity=1" class="btn btn-success">Buy Now</a>
+
+        </div>
+    </div>
+
+    <!-- Feedback Section -->
+    <div class="mt-4">
+        <h4>Customer Feedback</h4>
+
+        <!-- Display Feedback -->
+        {% for feedback in feedbacks %}
+            <p><strong>{{ feedback.user.username }}</strong>: {{ feedback.comment }}</p>
+        {% empty %}
+            <p>No feedback available yet.</p>
+        {% endfor %}
+
+        <!-- Write Feedback -->
+        {% if user.is_authenticated %}
+            <form method="POST">
+                {% csrf_token %}
+                <textarea name="comment" class="form-control" placeholder="Write your feedback..." required></textarea>
+                <button type="submit" class="btn btn-primary mt-2">Submit</button>
+            </form>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a> to leave feedback.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
+
