@@ -3,47 +3,269 @@
 {% block content %}
 <div class="container mt-4">
     <div class="row">
+        <!-- Product Image -->
         <div class="col-md-6">
-            <img src="{{ product.imageURL }}" class="img-fluid" alt="{{ product.name }}">
+            <div class="product-image-container">
+                <img src="{{ product.imageURL }}" class="img-fluid rounded shadow" alt="{{ product.name }}">
+            </div>
         </div>
+        <!-- Product Details -->
         <div class="col-md-6">
-            <h2>{{ product.name }}</h2>
-            <p><strong>Price:</strong> ${{ product.price }}</p>
-            <p><strong>Description:</strong> {{ product.description }}</p>
-            
-            <!-- Add to Cart -->
-            <button data-product="{{ product.id }}" data-action="add" class="btn btn-primary update-cart">Add to Cart</button>
-
-            
-            <!-- Buy Now -->
-            <a href="{% url 'checkout' %}?product={{ product.id }}&quantity=1" class="btn btn-success">Buy Now</a>
-
+            <div class="product-details p-4 rounded">
+                <h2 class="product-title mb-4">{{ product.name }}</h2>
+                <div class="price-section mb-4">
+                    <p class="price-label mb-1">Price:</p>
+                    <h3 class="price-value">${{ product.price }}</h3>
+                </div>
+                <div class="description-section mb-4">
+                    <p class="description-label mb-1">Description:</p>
+                    <p class="description-text">{{ product.description|default:"No description available" }}</p>
+                </div>
+                
+                <div class="action-buttons">
+                    <!-- Add to Cart -->
+                    <button data-product="{{ product.id }}" data-action="add" 
+                            class="btn btn-primary btn-lg update-cart mb-2 me-2">
+                        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                    </button>
+                    
+                    <!-- Buy Now -->
+                    <a href="{% url 'checkout' %}?product={{ product.id }}&quantity=1" 
+                       class="btn btn-success btn-lg mb-2">
+                        <i class="fas fa-bolt me-2"></i>Buy Now
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Feedback Section -->
-    <div class="mt-4">
-        <h4>Customer Feedback</h4>
+    <div class="feedback-section mt-5">
+        <div class="feedback-header d-flex justify-content-between align-items-center mb-4">
+            <h4 class="m-0">Customer Feedback</h4>
+            {% if user.is_authenticated %}
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#feedbackForm" aria-expanded="false" aria-controls="feedbackForm">
+                Write Review
+            </button>
+            {% endif %}
+        </div>
 
-        <!-- Display Feedback -->
-        {% for feedback in feedbacks %}
-            <p><strong>{{ feedback.user.username }}</strong>: {{ feedback.comment }}</p>
-        {% empty %}
-            <p>No feedback available yet.</p>
-        {% endfor %}
-
-        <!-- Write Feedback -->
+        <!-- Write Feedback Form -->
         {% if user.is_authenticated %}
-            <form method="POST">
-                {% csrf_token %}
-                <textarea name="comment" class="form-control" placeholder="Write your feedback..." required></textarea>
-                <button type="submit" class="btn btn-primary mt-2">Submit</button>
-            </form>
+        <div class="collapse mb-4" id="feedbackForm">
+            <div class="card card-body feedback-form-container">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <textarea name="comment" class="form-control" 
+                                placeholder="Share your experience with this product..." 
+                                rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Review
+                    </button>
+                </form>
+            </div>
+        </div>
         {% else %}
-            <p><a href="{% url 'login' %}">Login</a> to leave feedback.</p>
+        <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle me-2"></i>
+            Please <a href="{% url 'login' %}" class="alert-link">login</a> to leave feedback.
+        </div>
         {% endif %}
-    </div>
 
+        <!-- Display Feedbacks -->
+        <div class="feedback-container">
+            {% for feedback in feedbacks %}
+            <div class="feedback-card mb-3">
+                <div class="feedback-header">
+                    <div class="user-info">
+                        <i class="fas fa-user-circle me-2"></i>
+                        <strong>{{ feedback.user.username }}</strong>
+                    </div>
+                    <div class="feedback-date">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        {{ feedback.created_at|date:"F d, Y" }}
+                    </div>
+                </div>
+                <div class="feedback-content">
+                    {{ feedback.comment }}
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-4">
+                <i class="fas fa-comments fa-2x mb-3 text-muted"></i>
+                <p class="text-muted">No feedback available yet. Be the first to review!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
+
+<style>
+    /* Product Styling */
+    .product-image-container {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .product-details {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .product-title {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    .price-label, .description-label {
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    .price-value {
+        color: var(--primary-color);
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .description-text {
+        color: #e0e0e0;
+    }
+
+    /* Feedback Section Styling */
+    .feedback-section {
+        background-color: rgba(20, 20, 20, 0.95);
+        border-radius: 15px;
+        padding: 30px;
+        border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .feedback-form-container {
+        background-color: rgba(30, 30, 30, 0.95);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .feedback-form-container textarea {
+        background-color: rgba(40, 40, 40, 0.95);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        color: #e0e0e0;
+    }
+
+    .feedback-form-container textarea:focus {
+        background-color: rgba(50, 50, 50, 0.95);
+        border-color: rgba(255, 215, 0, 0.3);
+        color: #ffffff;
+        box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.1);
+    }
+
+    .feedback-container {
+        max-height: 600px;
+        overflow-y: auto;
+        padding: 15px;
+        background-color: rgba(25, 25, 25, 0.95);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .feedback-card {
+        background-color: rgba(35, 35, 35, 0.95);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        border-radius: 8px;
+        padding: 15px;
+        transition: all 0.2s ease;
+        margin-bottom: 15px;
+    }
+
+    .feedback-card:hover {
+        transform: translateX(5px);
+        background-color: rgba(45, 45, 45, 0.95);
+        border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .feedback-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .user-info {
+        color: var(--primary-color);
+        font-size: 1.1rem;
+    }
+
+    .feedback-date {
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    .feedback-content {
+        color: #ffffff;
+        line-height: 1.6;
+        font-size: 1rem;
+        padding: 10px 0;
+    }
+
+    /* Custom Scrollbar for Feedback Container */
+    .feedback-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .feedback-container::-webkit-scrollbar-track {
+        background: rgba(20, 20, 20, 0.95);
+        border-radius: 4px;
+    }
+
+    .feedback-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 215, 0, 0.2);
+        border-radius: 4px;
+    }
+
+    .feedback-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 215, 0, 0.3);
+    }
+
+    /* Button Styling */
+    .btn-primary, .btn-success {
+        padding: 12px 25px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    /* Alert Styling */
+    .alert-info {
+        background-color: rgba(23, 162, 184, 0.1);
+        border: 1px solid rgba(23, 162, 184, 0.2);
+        color: #e0e0e0;
+    }
+
+    .alert-link {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    .alert-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Empty State Styling */
+    .text-muted {
+        color: #888 !important;
+    }
+</style>
 {% endblock %}
 

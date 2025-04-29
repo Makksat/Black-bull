@@ -1,12 +1,29 @@
-{% extends 'store/main.html' %}
-{% block content %}
-<div class="container mt-5">
-    <h2>Register</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Register</button>
-    </form>
-    <p class="mt-3">Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Black Bulls</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body style="margin:0; padding:0; overflow:hidden;">
+    <div class="auth-split-container">
+        <div class="auth-form-side">
+            <a href="/" class="back-btn">&#8592; Back</a>
+            <div class="auth-form-wrapper">
+                <h2 class="mb-4">Register</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success btn-block mt-3">Register</button>
+                </form>
+                <p class="mt-3">Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
+            </div>
+        </div>
+        <div class="auth-image-side">
+            <img src="{% static 'images/bull.jpg' %}" alt="Bull Logo" class="bull-image">
+        </div>
+    </div>
+</body>
+</html>

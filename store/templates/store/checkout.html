@@ -32,7 +32,7 @@
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
+							<input class="form-control" type="text" name="country" placeholder="Country..">
 						</div>
 					</div>
 
@@ -55,7 +55,7 @@
 
 		<div class="col-lg-6">
 			<div class="box-element">
-				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+				<a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
 				<hr>
 				<h3>Order Summary</h3>
 				<hr>
@@ -67,8 +67,8 @@
 					<div style="flex:1"><p>x{{item.quantity}}</p></div>
 				</div>
 				{% endfor %}
-				<h5>Items:   {{order.get_cart_items}}</h5>
-				<h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
+				<h5>Items: {{order.get_cart_items}}</h5>
+				<h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
 			</div>
 		</div>
 	</div>
@@ -80,11 +80,10 @@
 
         // Render the PayPal button into #paypal-button-container
         paypal.Buttons({
-
 			style: {
-				color:  'blue',
-				shape:  'rect',
-			 },
+				color: 'blue',
+				shape: 'rect',
+			},
 
             // Set up the transaction
             createOrder: function(data, actions) {
@@ -100,16 +99,16 @@
             // Finalize the transaction
             onApprove: function(data, actions) {
                 return actions.order.capture().then(function(details) {
-                    submitFormData()
+                    // Call your server to save the transaction
+                    submitFormData();
                 });
             }
-
         }).render('#paypal-button-container');
     </script>
 
 	<script type="text/javascript">
 		var shipping = '{{order.shipping}}'
-		
+		var total = '{{order.get_cart_total}}'
 
 		if (shipping == 'False'){
 		 	document.getElementById('shipping-info').innerHTML = ''
@@ -133,11 +132,6 @@
 	    	document.getElementById('form-button').classList.add("hidden");
 	    	document.getElementById('payment-info').classList.remove("hidden");
 	    })
-	    /*
-	    document.getElementById('make-payment').addEventListener('click', function(e){
-	    	submitFormData()
-	    })
-	    */
 
 	    function submitFormData(){
 	    	console.log('Payment button clicked')
@@ -174,23 +168,34 @@
 	    	fetch(url, {
 	    		method:'POST',
 	    		headers:{
-	    			'Content-Type':'applicaiton/json',
+	    			'Content-Type':'application/json',
 	    			'X-CSRFToken':csrftoken,
 	    		}, 
 	    		body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
-	    		
 	    	})
-	    	.then((response) => response.json())
+	    	.then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
 	    	.then((data) => {
 				console.log('Success:', data);
-				alert('Transaction completed');  
-
-				cart = {}
-				document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-
-				window.location.href = "{% url 'store' %}"
-
-				})
+				
+				// Clear the cart data
+				resetCart();
+				
+				alert('Transaction completed');
+				
+				// Redirect to store page after a short delay to ensure cart is reset
+				setTimeout(function() {
+					window.location.href = "{% url 'store' %}";
+				}, 1000);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+				alert('There was an error processing your order. Please try again.');
+			});
 	    }
 	</script>
 {% endblock content %}

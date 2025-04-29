@@ -1,6 +1,5 @@
 var updateBtns = document.getElementsByClassName('update-cart')
 
-
 for (i = 0; i < updateBtns.length; i++) {
 	updateBtns[i].addEventListener('click', function(){
 		var productId = this.dataset.product
@@ -14,6 +13,12 @@ for (i = 0; i < updateBtns.length; i++) {
             updateUserOrder(productId, action)
         }
 	}) 
+}
+
+function resetCart() {
+    cart = {}
+    document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+    document.getElementById('cart-total').innerHTML = '0'
 }
 
 function addCookieItem(productId, action){
@@ -38,9 +43,7 @@ function addCookieItem(productId, action){
 	console.log('Cart:', cart)
 	document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
 	location.reload()
-
 }
-
 
 function updateUserOrder(productId, action){
 	console.log('User is logged in, sending data...')

@@ -1,0 +1,33 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">About Black Bulls</h2>
+    
+    <div class="row">
+        <div class="col-md-5">
+            <img src="{% static 'images/about_us.jpg' %}" alt="About Us" class="img-fluid rounded shadow-lg mb-4" style="width: 100%; height: auto;">
+        </div>
+        <div class="col-md-7">
+            <div class="about-content pl-md-4">
+                <h3 class="mb-4">Our Story</h3>
+                <p>Welcome to Black Bulls, your number one source for all things [products]. We're dedicated to providing you the very best of our products, with an emphasis on quality, customer service, and uniqueness.</p>
+                
+                <p>Founded in 2024, Black Bulls has come a long way from its beginnings. When we first started out, our passion for quality products drove us to start our own business.</p>
+                
+                <p>We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please don't hesitate to contact us.</p>
+
+                <div class="mt-4">
+                    <h4 class="mb-3">Our Values</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">✓ Quality Products</li>
+                        <li class="mb-2">✓ Customer Satisfaction</li>
+                        <li class="mb-2">✓ Innovation</li>
+                        <li class="mb-2">✓ Integrity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %} 

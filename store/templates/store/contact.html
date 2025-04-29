@@ -1,0 +1,309 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Contact Form Section -->
+        <div class="col-lg-7 mb-4">
+            <div class="contact-form-card">
+                <h2 class="section-title mb-4">Get in Touch</h2>
+                <p class="text-muted mb-4">Have a question or feedback? We'd love to hear from you.</p>
+                
+                <form method="post" class="contact-form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-user icon-label"></i>Your Name
+                                </label>
+                                <input type="text" class="form-control custom-input" id="name" name="name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope icon-label"></i>Email Address
+                                </label>
+                                <input type="email" class="form-control custom-input" id="email" name="email" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label for="subject" class="form-label">
+                            <i class="fas fa-tag icon-label"></i>Subject
+                        </label>
+                        <input type="text" class="form-control custom-input" id="subject" name="subject" required>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="message" class="form-label">
+                            <i class="fas fa-comment icon-label"></i>Message
+                        </label>
+                        <textarea class="form-control custom-input" id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn custom-btn btn-block">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="col-lg-5 mb-4">
+            <div class="contact-info-card">
+                <h3 class="section-title mb-4">Contact Information</h3>
+                
+                <div class="info-item">
+                    <div class="icon-box">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h5>Our Location</h5>
+                        <p>123 Store Street, City, Country</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="icon-box">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h5>Phone Number</h5>
+                        <p>+1 234 567 8900</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="icon-box">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <h5>Email Address</h5>
+                        <p>contact@blackbulls.com</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="icon-box">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="info-content">
+                        <h5>Business Hours</h5>
+                        <p>Monday - Friday: 9:00 AM - 6:00 PM<br>
+                        Saturday: 10:00 AM - 4:00 PM<br>
+                        Sunday: Closed</p>
+                    </div>
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="social-links">
+                    <h5 class="section-title-sm">Follow Us</h5>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Map Section -->
+<div class="map-section mt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937595!2d2.2922926156740665!3d48.858370079287466!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sEiffel%20Tower!5e0!3m2!1sen!2sus!4v1647951371321!5m2!1sen!2sus" 
+                        width="100%" 
+                        height="400" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Main Containers */
+    .contact-form-card, .contact-info-card {
+        background-color: rgba(18, 18, 18, 0.95);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        border-radius: 15px;
+        padding: 2.5rem;
+        height: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    /* Typography */
+    .section-title {
+        color: #ffd700;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-title-sm {
+        color: #ffd700;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Form Styling */
+    .form-label {
+        color: #ffd700;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .icon-label {
+        color: #ffd700;
+        margin-right: 8px;
+    }
+
+    .custom-input {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-radius: 8px;
+        color: #fff;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+
+    .custom-input:focus {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: #ffd700;
+        box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        color: #fff;
+    }
+
+    /* Button Styling */
+    .custom-btn {
+        background: linear-gradient(45deg, #ffd700, #ffed4a);
+        border: none;
+        color: #000;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(45deg, #ffed4a, #ffd700);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Info Items */
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 1.2rem;
+        background-color: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 215, 0, 0.05);
+    }
+
+    .info-item:hover {
+        transform: translateX(10px);
+        background-color: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 215, 0, 0.2);
+    }
+
+    .icon-box {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(45deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+    }
+
+    .icon-box i {
+        color: #ffd700;
+        font-size: 1.2rem;
+    }
+
+    .info-content h5 {
+        color: #ffd700;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .info-content p {
+        color: #e0e0e0;
+        margin-bottom: 0;
+        font-size: 0.95rem;
+    }
+
+    /* Social Media */
+    .social-links {
+        margin-top: 2.5rem;
+        text-align: center;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(45deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
+        border-radius: 12px;
+        color: #ffd700;
+        transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+        background: linear-gradient(45deg, #ffd700, #ffed4a);
+        color: #000;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Map Container */
+    .map-container {
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .contact-form-card, .contact-info-card {
+            padding: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+        }
+        
+        .info-item {
+            padding: 1rem;
+        }
+    }
+</style>
+{% endblock %} 
